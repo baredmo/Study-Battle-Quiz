@@ -2,14 +2,149 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Study Battle — Quiz Game</title>
-styles.css
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Study Battle — Quiz Game</title>
+  styles.css
+  <meta name="description" content="Web-based quiz game with leaderboards and real-time matches." />
+  <meta name="color-scheme" content="light dark" />
 </head>
 <body>
-<h1>🧠 Study Battle</h1>
-<p>Compete with classmates and master the material!</p>
-<script/script>
+  <header class="app-header">
+    <h1>🧠 Study Battle</h1>
+    <p class="subtitle">Compete with classmates, master the material.</p>
+  </header>
+
+  <main>
+    <!-- Setup Panel -->
+    <section class="panel" id="setupPanel">
+      <h2>Setup</h2>
+      <div class="grid-2">
+        <div>
+          <label for="playerName">Your name</label>
+          <input type="text" id="playerName" placeholder="e.g., Brooke" required />
+        </div>
+        <div>
+          <label for="classCode">Class / group code (for leaderboards)</label>
+          <input type="text" id="classCode" placeholder="e.g., BIO101-A" />
+        </div>
+        <div>
+          <label for="questionsFile">Load questions (.json)</label>
+          <input type="file" id="questionsFile" accept=".json" />
+          <small>Or use the sample questions included.</small>
+        </div>
+        <div>
+          <label for="modeSelect">Mode</label>
+          <select id="modeSelect">
+            <option value="practice">Practice (untimed)</option>
+            <option value="timed">Timed</option>
+            <option value="challenge">Challenge (seeded order)</option>
+            <option value="match">Match (real-time)</option>
+          </select>
+        </div>
+        <div id="timedOptions" class="hide">
+          <label for="timeMinutes">Time limit (minutes)</label>
+          <input type="number" id="timeMinutes" min="1" max="180" value="15" />
+        </div>
+        <div>
+          <label class="checkbox">
+            <input type="checkbox" id="shuffleToggle" checked />
+            <span>Shuffle questions</span>
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" id="showExplainToggle" checked />
+            <span>Show explanations after each question</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Real-time Match controls -->
+      <details id="matchDetails" class="hide">
+        <summary>Real-time Match Setup</summary>
+        <div class="grid-2">
+          <div>
+            <label for="matchId">Match ID</label>
+            <input type="text" id="matchId" placeholder="e.g., WEEK1-ROOMA" />
+            <small>Everyone uses the same group code and match ID.</small>
+          </div>
+          <div class="align-end">
+            <button id="hostMatchBtn" class="secondary">Host Match</button>
+            <button id="joinMatchBtn" class="secondary">Join Match</button>
+          </div>
+        </div>
+        <div id="matchRoster" class="panel">
+          <strong>Roster:</strong> <span id="rosterList">(empty)</span>
+        </div>
+      </details>
+
+      <button id="startBtn" class="primary">Start Quiz</button>
+    </section>
+
+    <!-- HUD + Quiz -->
+    <section class="panel hide" id="quizPanel">
+      <div class="hud">
+        <div><span class="label">Player:</span> <span id="hudPlayer">—</span></div>
+        <div><span class="label">Group:</span> <span id="hudGroup">—</span></div>
+        <div><span class="label">Score:</span> <span id="hudScore">0</span></div>
+        <div><span class="label">Q:</span> <span id="hudProgress">0 / 0</span></div>
+        <div><span class="label">Time:</span> <span id="hudTime">—</span></div>
+      </div>
+
+      <div id="questionBox">
+        <h3 id="qText">Question text</h3>
+        <div id="choices" class="choices"></div>
+        <div id="feedback" class="feedback"></div>
+        <div class="actions">
+          <button id="nextBtn" class="secondary" disabled>Next ▶</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Results -->
+    <section class="panel hide" id="resultsPanel">
+      <h2>Results</h2>
+      <div id="resultSummary"></div>
+      <div class="actions">
+        <button id="retryBtn" class="secondary">Retry</button>
+        <button id="shareBtn" class="secondary">Copy share link</button>
+      </div>
+    </section>
+
+    <!-- Leaderboard -->
+    <section class="panel" id="leaderboardPanel">
+      <h2>Leaderboard</h2>
+      <div class="grid-2">
+        <div>
+          <label for="lbClassFilter">Class / group</label>
+          <input type="text" id="lbClassFilter" placeholder="e.g., BIO101-A" />
+        </div>
+        <div class="align-end">
+          <button id="refreshLbBtn" class="secondary">Refresh</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="leaderboardTable">
+          <thead>
+            <tr><th>Rank</th><th>Name</th><th>Score</th><th>Total</th><th>%</th><th>Time</th><th>Date</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <small>
+        Leaderboard is <strong>class/group code</strong> specific. If no online backend is configured, results are stored locally in your browser for demo purposes.
+      </small>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <span>© 2025 Study Battle</span>
+    <span>#Help</a></span>
+  </footer>
+
+  <!-- Optional Firebase for online leaderboards & match mode -->
+  https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js</script>
+  https://www.gstatic.com/firebasejs/10.14.0/firebase-database-compat.js</script>
+
+  app.js</script>
 </body>
 </html>
